@@ -1,0 +1,25 @@
+.container {
+    display: inline-block;
+    text-align: left;
+}
+
+.page {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+}
+
+p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.details-container {
+    display: flex;
+    justify-content: center;
+}
+
+.button-container {
+    width: 200px;
+    margin: 0 auto;
+}
