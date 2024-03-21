@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {getBlogs} from "../services/api";
+import {getBlogs, getFeatures} from "../services/api";
 import {
     Accordion,
     AccordionActions,
@@ -8,16 +8,20 @@ import {
     Box,
     Button, Container,
     CssBaseline,
-    Grid
+    Grid, Paper
 } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {deepOrange} from "@mui/material/colors";
+import {dateTrim} from "../utils/tools";
+import UserInfoComp from "../components/ui/UserInfo";
+import OutLineComp from "../components/ui/outline";
 
 
 const HomePage = () => {
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [blogs, setBlogs] = useState<any>(null)
+    const [featureData, setFeatureData] = useState<any>(null)
 
     useEffect(() => {
         const fetchBlogs = async () => {
@@ -32,6 +36,20 @@ const HomePage = () => {
         };
 
         fetchBlogs();
+
+        const fetchFeatures = async () => {
+            try {
+                const data = await getFeatures(1);
+                setFeatureData(data);
+            } catch (error) {
+                setError(error.message)
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        fetchFeatures();
+
     },[])
 
     if (loading) {
@@ -43,44 +61,53 @@ const HomePage = () => {
     }
 
     return (
+        <Grid container spacing={3}>
+            <Grid item xs={3}>
+                <Paper style={{ margin: '0 0 0 5%' }}>
+                    <UserInfoComp avtar={''} create_time={'2024-03-20'} rating={1} user_name={'tmod-admin'}></UserInfoComp>
+                </Paper>
+            </Grid>
+            <Grid item xs={6}>
+                <Paper>
+                    <Box sx={{bgcolor: '#cfe8fc', height: '10vh'}}>
+                        navigator
+                    </Box>
 
-        <React.Fragment>
-            <CssBaseline />
-            <Container maxWidth="lg">
-                <Box sx={{bgcolor: '#cfe8fc', height: '10vh'}}>
-                    header
-                </Box>
+                    <div>
+                        {
+                            blogs.map((blog: any) => (
+                                    <Accordion defaultExpanded>
+                                        <AccordionSummary
+                                            expandIcon={<ExpandMoreIcon/>}
+                                            aria-controls="panel3-content"
+                                            id="panel3-header"
+                                        >
+                                            {blog.topic}
+                                            {/*<Avatar sx={{ bgcolor: deepOrange[500], marginLeft:1}}>W</Avatar>*/}
+                                            <br/>
+                                            {dateTrim(blog.created)}
 
-                <div>
-                    {
-                        blogs.map((blog: any) => (
-                            <Accordion defaultExpanded>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon/>}
-                                    aria-controls="panel3-content"
-                                    id="panel3-header"
-                                >
-                                    {blog.topic}
-                                    {/*<Avatar sx={{ bgcolor: deepOrange[500], marginLeft:1}}>W</Avatar>*/}
-                                    <br/>
-                                    {blog.created}
-                                </AccordionSummary>
+                                        </AccordionSummary>
 
-                                <AccordionDetails>
-                                    {blog.introduction}
-                                </AccordionDetails>
-                                <AccordionActions>
-                                    <Button>enter</Button>
-                                </AccordionActions>
-                            </Accordion>
+                                        <AccordionDetails>
+                                            {blog.introduction}
+                                        </AccordionDetails>
+                                        <AccordionActions>
+                                            <Button>enter</Button>
+                                        </AccordionActions>
+                                    </Accordion>
+                                )
                             )
-                        )
-                    }
-                </div>
-            </Container>
-        </React.Fragment>
-
-
+                        }
+                    </div>
+                </Paper>
+            </Grid>
+            <Grid item xs={3}>
+                <Paper style={{ margin: '0 5% 0 0' }}>
+                    <OutLineComp topic={featureData[0].feature_type_name} features={featureData}></OutLineComp>
+                </Paper>
+            </Grid>
+        </Grid>
     );
 };
 
