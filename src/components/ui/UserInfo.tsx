@@ -1,6 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {Avatar, Rating, Typography} from "@mui/material";
 
+const UserPanel = () => {
+
+    return(
+        <div>
+
+        </div>
+    )
+}
 
 interface UserInfoCompProps {
     user_name: string;
@@ -18,7 +26,7 @@ const UserInfoComp: React.FC<UserInfoCompProps> = ({user_name, avtar, create_tim
             <h2>{user_name}</h2>
             <Avatar alt="Remy Sharp" src={avtar}/>
             <h2>{create_time}</h2>
-            <Typography component="legend">Controlled</Typography>
+            <Typography component="legend">Rating</Typography>
             <Rating
                 name="simple-controlled"
                 value={rating}

@@ -42,7 +42,7 @@ const OutLineComp: React.FC<OutLineCompProps> = ({topic, features}) => {
                 // }
             >
                 {
-                    features.map((feature: any, index) => {
+                   features && features.map((feature: any, index) => {
                             if (index === 0) {
                                 currentMainTitle = 0;
                                 currentSubTitleNumber = 1

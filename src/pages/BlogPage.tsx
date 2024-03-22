@@ -77,7 +77,7 @@ const BlogPage = () => {
                                 </Mui.ListSubheader>
                             }
                         >
-                            {featureData.map((feature: any) => (
+                            { featureData && featureData.map((feature: any) => (
                                 <Mui.ListItemText key={feature.pk}>
                                     {feature.feature_type_name}
                                     <Mui.ListItemText primary={feature.content} />
