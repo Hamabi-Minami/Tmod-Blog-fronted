@@ -14,8 +14,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {deepOrange} from "@mui/material/colors";
 import {dateTrim} from "../utils/tools";
 import UserInfoComp from "../components/ui/UserInfo";
-import OutLineComp from "../components/ui/outline";
+import OutLineComp from "../components/ui/Outline";
 import SendIcon from '@mui/icons-material/Send';
+import {Link} from "react-router-dom";
 
 
 const HomePage = () => {
@@ -25,8 +26,10 @@ const HomePage = () => {
     const [featureData, setFeatureData] = useState<any>(null)
 
     useEffect(() => {
+
         const fetchBlogs = async () => {
             try {
+                setLoading(true);
                 const responseData = await getBlogs(); // Assuming ID is 1
                 setBlogs(responseData);
             } catch (error) {
@@ -36,10 +39,10 @@ const HomePage = () => {
             }
         };
 
-        fetchBlogs();
 
         const fetchFeatures = async () => {
             try {
+                setLoading(true);
                 const data = await getFeatures(1);
                 setFeatureData(data);
             } catch (error) {
@@ -49,7 +52,12 @@ const HomePage = () => {
             }
         };
 
+        fetchBlogs();
         fetchFeatures();
+
+        return () => {
+
+        };
 
     }, [])
 
@@ -63,36 +71,36 @@ const HomePage = () => {
 
     return (
         <div>
-            <Grid container spacing={2} style={{height: '100px', margin: '1% 1% 1% 1%'}} alignItems="center">
-                <Grid item xs={3}></Grid>
-                <Grid item xs={1}>
-                    <Button variant="text">
-                        Home
-                    </Button>
-                </Grid>
-                <Grid item xs={1}>
-                    <Button variant="text">
-                        Topics
-                    </Button>
-                </Grid>
-                <Grid item xs={1}>
-                    <Button variant="text">
-                        Followed
-                    </Button>
-                </Grid>
-                <Grid item xs={1}>
-                    <Button variant="text">
-                        Research
-                    </Button>
-                </Grid>
-                <Grid item xs={3}>
-                    <TextField id="standard-basic" label="input" variant="standard" style={{marginBottom: '25px'}}/>
+            {/*<Grid container spacing={2} style={{height: '100px', margin: '1% 1% 1% 1%'}} alignItems="center">*/}
+            {/*    <Grid item xs={3}></Grid>*/}
+            {/*    <Grid item xs={1}>*/}
+            {/*        <Button variant="text">*/}
+            {/*            Home*/}
+            {/*        </Button>*/}
+            {/*    </Grid>*/}
+            {/*    <Grid item xs={1}>*/}
+            {/*        <Button variant="text">*/}
+            {/*            Topics*/}
+            {/*        </Button>*/}
+            {/*    </Grid>*/}
+            {/*    <Grid item xs={1}>*/}
+            {/*        <Button variant="text">*/}
+            {/*            Followed*/}
+            {/*        </Button>*/}
+            {/*    </Grid>*/}
+            {/*    <Grid item xs={1}>*/}
+            {/*        <Button variant="text">*/}
+            {/*            Research*/}
+            {/*        </Button>*/}
+            {/*    </Grid>*/}
+            {/*    <Grid item xs={3}>*/}
+            {/*        <TextField id="standard-basic" label="input" variant="standard" style={{marginBottom: '25px'}}/>*/}
 
-                </Grid>
-                <Grid item xs={1}></Grid>
-            </Grid>
+            {/*    </Grid>*/}
+            {/*    <Grid item xs={1}></Grid>*/}
+            {/*</Grid>*/}
 
-            <Grid container spacing={2}>
+            <Grid container spacing={2} style={{marginTop: '10px'}}>
 
                 <Grid item xs={3}>
                     <Paper style={{margin: '0 0 0 5%'}}>
@@ -123,7 +131,9 @@ const HomePage = () => {
                                                 {blog.introduction}
                                             </AccordionDetails>
                                             <AccordionActions>
-                                                <Button>enter</Button>
+                                                <Button key={blog.pk}
+                                                        component={Link}
+                                                        to={`/blog/${blog.pk}`}>enter</Button>
                                             </AccordionActions>
                                         </Accordion>
                                     )
@@ -134,7 +144,11 @@ const HomePage = () => {
                 </Grid>
                 <Grid item xs={3}>
                     <Paper style={{margin: '0 5% 0 0'}}>
-                        <OutLineComp topic={featureData[0].feature_type_name} features={featureData}></OutLineComp>
+                        {featureData && featureData.length > 0 ? (
+                            <OutLineComp topic={featureData[0].feature_type_name} features={featureData}></OutLineComp>
+                        ) : (
+                            <div>No feature data available</div>
+                        )}
                     </Paper>
                 </Grid>
             </Grid>

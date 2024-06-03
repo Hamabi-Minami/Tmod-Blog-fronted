@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Avatar, Rating, Typography} from "@mui/material";
+import {Avatar, Button, Rating, Typography} from "@mui/material";
 
 const UserPanel = () => {
 
@@ -25,6 +25,11 @@ const UserInfoComp: React.FC<UserInfoCompProps> = ({user_name, avtar, create_tim
         <div>
             <h2>{user_name}</h2>
             <Avatar alt="Remy Sharp" src={avtar}/>
+            <Button color="inherit" component="a"
+                    href="https://github.com/Hamabi-Minami?tab=repositories"
+                    target="_blank" sx={{width: '200px', display: 'block', margin: '0,0,0,0'}}>
+                GitHub
+            </Button>
             <h2>{create_time}</h2>
             <Typography component="legend">Rating</Typography>
             <Rating
