@@ -5,6 +5,7 @@ import '../assets/styles/test.css';
 import {useParams} from 'react-router-dom';
 import LayoutComp from "../components/ui/layout";
 import {Paper, Typography} from "@mui/material";
+import CodeBlock from "../components/features/CodeBlock";
 
 
 
@@ -43,12 +44,11 @@ const BlogPage = () => {
         }
 
         fetchBlog();
-        fetchFeatures()
+        fetchFeatures();
 
         return () => {
 
         };
-
     }, []);
 
     const handleButtonClick = () => {
@@ -71,9 +71,30 @@ const BlogPage = () => {
         )
     }
 
+    function getLanguage (codes: any) {
+        const match = codes.match(/#language=([\w-]+)/);
+        return match ? match[1] : '';
+    }
+
+    // Function to render the appropriate element based on the item type
+    const renderElement = (index: any, feature: any) => {
+        switch (feature.feature_type_name) {
+            case "Title":
+                return <h1 key={index}>{feature.content}</h1>
+            case "SubTitle":
+                return <h2 key={index}>{feature.content}</h2>
+            case "paragraph":
+                return <p key={index}>{feature.content}</p>
+            case "Image":
+                return <img key={index} src={feature.content} alt={'img'}/>
+            case "Code":
+                return <CodeBlock key={index} language={getLanguage(feature.content)} codes={feature.content}/>
+        }
+    };
+
     const midContainer = () => {
         return (
-            <div className="page" style={{background: "cyan", width: "100%", maxHeight:"50%",}}>
+            <div className="page" style={{ width: "100%", maxHeight:"90%",}}>
                 <div className="container">
                     <Mui.Typography variant="h1" component="h2">
                         Blog Name: {blogData.topic}
@@ -83,24 +104,28 @@ const BlogPage = () => {
                     {/*<p>Rates: {blogData.rates}</p>*/}
                     {/*<p>Author: {blogData.author_name}</p>*/}
 
-                    <div className="details-container" style={{maxHeight:"90%", overflow: "auto" }}>
-                        <Mui.List
-                            sx={{width: '100%', maxHeight:"100%", bgcolor: 'background.paper'}}
-                            component="nav"
-                            aria-labelledby="nested-list-subheader"
-                            subheader={
-                                <Mui.ListSubheader component="div" id="nested-list-subheader">
-                                    Nested List Items
-                                </Mui.ListSubheader>
-                            }>
+                    <div className="details-container" style={{maxHeight: "80%", overflow: "auto", scrollbarWidth: "none"}}>
+                        <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+                            <h1>Dynamic Elements</h1>
+                            <div id="container">
+                                {featureData && featureData.map((feature: any) => renderElement(feature.id,feature))}
+                            </div>
+                        </div>
 
-                            {featureData && featureData.map((feature: any) => (
-                                <Mui.ListItemText key={feature.pk}>
-                                    {feature.feature_type_name}
-                                    <Mui.ListItemText primary={feature.content}/>
-                                </Mui.ListItemText>
-                            ))}
-                        </Mui.List>
+
+
+                        {/*<Mui.List*/}
+                        {/*    sx={{width: '100%', maxHeight: "100%", bgcolor: 'background.paper'}}*/}
+                        {/*    component="nav"*/}
+                        {/*    aria-labelledby="nested-list-subheader"*/}
+                        {/*    subheader={*/}
+                        {/*        <Mui.ListSubheader component="div" id="nested-list-subheader">*/}
+                        {/*            Nested List Items*/}
+                        {/*        </Mui.ListSubheader>*/}
+                        {/*    }>*/}
+
+
+                        {/*</Mui.List>*/}
                     </div>
 
                 </div>

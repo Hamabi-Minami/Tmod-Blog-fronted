@@ -11,18 +11,18 @@ interface LayoutProps {
 const LayoutComp: React.FC<LayoutProps> = ({ left, mid, right, bottom}) => {
     return (
         <div>
-            <Grid container spacing={2} style={{marginTop: "10px", marginBottom: "10px" ,background: "yellow"}}>
+            <Grid container spacing={2} style={{marginTop: "10px", marginBottom: "10px", }}>
 
-                <Grid item xs={3} style={{height: "90vh"}}>
+                <Grid item xs={2} style={{height: "90vh"}}>
                     {left}
                 </Grid>
-                <Grid item xs={6} style={{height: "90vh"}}>
+                <Grid item xs={8} style={{height: "100vh"}}>
                     {mid}
                 </Grid>
-                <Grid item xs={3} style={{height: "90vh"}}>
+                <Grid item xs={2} style={{height: "90vh"}}>
                     {right}
                 </Grid>
-                <Grid item xs={12} style={{height: "10vh"}}>
+                <Grid item xs={12} style={{height: "10vh", marginTop: "-120px"}}>
                     {bottom}
                 </Grid>
             </Grid>
